@@ -1,30 +1,37 @@
 import { Module } from "@nestjs/common";
-import { user_controller } from "./infrastructure/http/user.controller";
-import { user_model } from "./application/models/user.model";
 import { MongooseModule } from "@nestjs/mongoose";
-import { userService } from "./application/service/user.services";
-import { user_repo } from "./application/repositary/user.repo";
-import { User, UserSchema } from "./infrastructure/schema/user.scheme";
-import { jwtService } from "src/core/jwt/jwtcreation";
+import mongoose from "mongoose";
+import { Provider, ProviderSchema } from "src/common/mongo_schema/user_schema/provider.schema";
+import { User, UserSchema } from "src/common/mongo_schema/user_schema/user.scheme";
+import { userService } from "./applications/service/user.services";
+import { user_controller } from "./infrastructure/http/user.controller";
+import { userRepo } from "./applications/repository/user.repo";
+import { ResponseUtil } from "src/common/response/api_response.wrapper";
+
 @Module({
-    imports:[
+    imports: [
         MongooseModule.forFeature([
             {
-                name:User.name,
-                schema:UserSchema
+                name: User.name,
+                schema: UserSchema
+            },
+            {
+                name: Provider.name,
+                schema: ProviderSchema
             }
-        ]),
+        ])
     ],
     providers:[
-        userService,
         {
-            provide:'user_repo',
-            useClass:user_repo
+            provide:'userRepo',
+            useClass:userRepo
         },
-        jwtService
+        userService,
+        ResponseUtil
     ],
     controllers:[user_controller],
     exports:[userService]
+    
 })
 
-export class user_module{}
+export class user_module {}

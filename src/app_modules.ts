@@ -4,7 +4,8 @@ import env_config from "./config/env_config";
 import { api_module } from "./modules/api_modules";
 import { MongooseModule } from "@nestjs/mongoose"
 import { APP_FILTER } from "@nestjs/core";
-import { GlobalExceptionFilter } from "./common/global-exception.filter";
+import { GlobalExceptionFilter } from "./common/filters/global-exception.filter";
+import { ApiResponseModule } from "./common/response/responseModule";
 
 @Module(
     {
@@ -20,15 +21,18 @@ import { GlobalExceptionFilter } from "./common/global-exception.filter";
                 useFactory: (config: ConfigService) => ({
                     uri: config.get<string>('mongo_db.mongo_db'),
                 })
-            })
+            }),
+            ApiResponseModule
 
         ],
-        providers:[
+        providers: [
             {
-                provide:APP_FILTER,
-                useClass:GlobalExceptionFilter
-            }
-        ]
+                provide: APP_FILTER,
+                useClass: GlobalExceptionFilter
+            },
+            
+        ],
+        
     })
 
 export class AppModule { }

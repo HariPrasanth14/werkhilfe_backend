@@ -12,15 +12,16 @@ export class JwtAuthGuard implements CanActivate{
         this.publicKey = fs.readFileSync(publicKeypath,'utf8')
     }
     canActivate(context: ExecutionContext): boolean | Promise<boolean> | Observable<boolean> {
-        const req = context.switchToHttp().getResponse()
-        console.log(req);
+        const req = context.switchToHttp().getRequest()
         
-        const authHeader = req.headers['authorization']
+        const authHeader = req?.cookies?.accessToken
 
-        if(!authHeader || !authHeader.startsWith("Bearer")){
-            throw new UnauthorizedException("Invalid token")
-        }
-        const token = authHeader.split(" ")[0]
+        // if(!authHeader || !authHeader.startsWith("Bearer")){
+        //     throw new UnauthorizedException("Invalid token")
+        // }
+        // const token = authHeader.split(" ")[0]
+        const token = authHeader
+
         if(!token){
             throw new UnauthorizedException("Invalid token")
         }
@@ -30,7 +31,7 @@ export class JwtAuthGuard implements CanActivate{
                 issuer:"Hari",
                 audience:"user"
             })
-            console.log(decode);
+            // console.log(decode);
             return true
         }catch(err){
             throw new UnauthorizedException("Invalid token")
