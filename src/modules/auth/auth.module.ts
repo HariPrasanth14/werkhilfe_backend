@@ -9,6 +9,8 @@ import { jwtService } from "src/core/jwt/jwtcreation";
 import { Provider, ProviderSchema } from "src/common/mongo_schema/user_schema/provider.schema";
 import { Provider_model } from "src/infrastructure/database_models/user_model/provider.model";
 import { ResponseUtil } from "src/common/response/api_response.wrapper";
+import { PassportModule } from "@nestjs/passport";
+import { GoogleStrategy } from "./infrastructure/oauth/google.statergy";
 // import { Seeker, SeekerSchema } from "src/common/mongo_schema/user_schema/seeker.schema";
 @Module({
     imports:[
@@ -20,11 +22,13 @@ import { ResponseUtil } from "src/common/response/api_response.wrapper";
             {
                 name:Provider.name,
                 schema:ProviderSchema
-            }
+            },
         ]),
+        PassportModule.register({session:false})
     ],
     providers:[
         authService,
+        GoogleStrategy,
         {
             provide:'auth_repo',
             useClass:auth_repo

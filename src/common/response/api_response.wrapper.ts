@@ -9,8 +9,7 @@ export class ResponseUtil {
         message: string = "Success",
         statusCode = HttpStatus.OK,
     ): ApiResponse<T> {
-        console.log(records);
-
+ 
         return {
             date: new Date(),
             message,

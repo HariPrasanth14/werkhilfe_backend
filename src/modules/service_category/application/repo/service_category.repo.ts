@@ -24,8 +24,7 @@ export class service_category_repo implements service_category_interface {
 
     async update_service_category(data: any, id: string): Promise<any> {
         const result = await this.serviceModel.findByIdAndUpdate(id,data)
-        console.log(result?._id);
-        
+         
         return result?._id?true:false
     }
     

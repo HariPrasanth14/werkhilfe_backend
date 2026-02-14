@@ -5,6 +5,7 @@ import { authBaseDto } from "../dto/auth_base_dto";
 import type { Response, Request } from "express";
 import { JwtAuthGuard } from "src/common/guard/jwt_verify";
 import { ResponseUtil } from "src/common/response/api_response.wrapper";
+import { AuthGuard } from "@nestjs/passport";
 
 @Controller("v1/api/auth")
 export class auth_controller {
@@ -58,5 +59,19 @@ export class auth_controller {
         return this.response.wrap(null, "logout successful");
     }
 
+
+    @Get('google')
+    @UseGuards(AuthGuard('google'))
+    async googleLogin(){
+        
+    }
+
+    @Get('google/callback')
+    @UseGuards(AuthGuard('google'))
+    async googleCallback(@Req() req:any){
+        
+        const token = await this.service.googleLogin(req.user)
+        return token
+    }
    
 }

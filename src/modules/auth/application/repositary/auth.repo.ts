@@ -14,12 +14,18 @@ export class auth_repo implements auth_interface {
         @InjectModel(Provider.name)
         private readonly providerModel: Model<ProviderDocument>
     ) { }
-    async create_user(data: any,session:any): Promise<any> {
-        return await this.userModel.create([data],{session})
+    async create_user(data: any, session: any): Promise<any> {
+        return await this.userModel.create([data], { session })
     }
-    
-    async add_provider(data: any,session:any): Promise<any> {        
-        return await this.providerModel.create([data],{session})
+
+    async add_provider(data: any, session: any): Promise<any> {
+        return await this.providerModel.create([data], { session })
+    }
+    async add_provider_without_session(data: any): Promise<any> {
+        return await this.userModel.create(data)
+    }
+    async attach_google_id(id: string, data: any): Promise<any> {
+        return await this.userModel.findByIdAndUpdate(id, { googleId: data })
     }
 
     async get_all_user(): Promise<any> {
@@ -42,6 +48,6 @@ export class auth_repo implements auth_interface {
     // }
 
     async get_provider_by_id(id: string): Promise<any> {
-        return await this.providerModel.findOne({ user_id:id })
+        return await this.providerModel.findOne({ user_id: id })
     }
 }
