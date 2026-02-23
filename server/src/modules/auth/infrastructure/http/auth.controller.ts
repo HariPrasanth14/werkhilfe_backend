@@ -9,7 +9,7 @@ import { AuthGuard } from "@nestjs/passport";
 import env_config from "src/config/env_config";
 import axios from "axios";
 import qs from 'qs'
-@Controller("v1/api/auth")
+@Controller("api/v1/auth")
 export class auth_controller {
     private readonly env: any
     constructor(
@@ -84,7 +84,7 @@ export class auth_controller {
 
     @Get('google/callback')
     // @UseGuards(AuthGuard('google'))
-    async googleCallback(@Query('code') code: string) {
+    async googleCallback(@Query('code') code: string,@Res() res:Response) {
            
         // 
         const tokenResponse = await axios.post(
@@ -117,7 +117,16 @@ export class auth_controller {
 
         const profile = userResponse.data
         const token = await this.service.googleLogin(profile)
-         return this.response.wrap(token)
+
+        
+        //  return this.response.wrap(token)
+        res.cookie('accessToken',token,{
+            maxAge:9000000,
+            httpOnly:true,
+            secure:false,
+            sameSite:'lax',
+            path:'/'
+        })
     }
 
 }
