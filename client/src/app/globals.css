@@ -1,4 +1,7 @@
 
+@tailwind utilities;
+@import "tailwindcss";
+
 /* Default Next.js global styles */
 html,
 body {
