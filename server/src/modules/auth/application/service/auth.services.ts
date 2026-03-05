@@ -66,10 +66,16 @@ export class authService {
         return result
     }
 
+
+
+
+
+
+
+
     async login(data: authBaseDto) {
         const { email, password } = data
         let userData = await this.repo.get_by_email(email)
-
 
         if (!userData) {
             throw new Error("Invalid email/password")
@@ -83,15 +89,41 @@ export class authService {
         if (providerData) {
             is_provider = true
         }
+
         if (userData.password !== password) {
             throw new Error("Invalid email/password")
         }
+        
         const token = this.jwt.generateJwtToken({
             id: userData._id,
             email: userData.email,
         })
         return [token, is_provider]
+        // ` 
+        // 1 - user
+        // 2 - admin
+        // 3 - seller
+        // `
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     async googleLogin(googleUser: any) {
         let userData = {
