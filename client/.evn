@@ -1,1 +1,2 @@
-NEXT_PUBLIC_API_URL=http://localhost:4001
+NEXT_PUBLIC_API_URL=http://localhost:4001\
+BACKEND=http://localhost:4001

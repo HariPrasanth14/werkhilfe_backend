@@ -19,7 +19,7 @@ export class auth_controller {
         this.env = env_config()
     }
 
-    @UseGuards(JwtAuthGuard)
+    // @UseGuards(JwtAuthGuard)
     @Get('all_user')
     async get_all_users() {
 
