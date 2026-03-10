@@ -1,8 +1,10 @@
 "use client"
 
 import { useEffect, useState } from "react"
+import UserList from "../componenet/UserList";
+import UserItem from "../componenet/UserItem";
 
-type User = {
+export type User = {
     _id: string,
     name: string,
     email: string,
@@ -22,9 +24,9 @@ export default function UsersPage() {
                 const response = await fetch(
                     `http://localhost:4001/api/v1/auth/all_user`
                 )
-                const data: User[] = await response.json()
+                const data = await response.json()
                 console.log("user data",data)
-                setUsers(data)
+                setUsers(data?.records)
             } catch (err) {
                 setError("failed to fetch")
             } finally {
@@ -38,11 +40,14 @@ export default function UsersPage() {
     return(
         <div>
             <h1>User List</h1>
-            <ul>
-                {Array.isArray(users) && users?.map((user)=>(
+            {/* <ul>
+                {
+                Array.isArray(users) && users?.map((user)=>(
                     <li key={user._id}>{user.name}</li>
                 ))}
-            </ul>
+            </ul> */}
+            {/* <UserList users={users} /> */}
+            <UserItem user={users[0]}/>
         </div>
     )
 }
