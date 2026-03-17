@@ -1,17 +1,16 @@
-import { User } from "../users/page";
 import UserItem from "./UserItem";
-
+import { User } from "../customHook/hook";
 
 type Props = {
     users:User[],
-    onDelete:(id: string) => void
+    onDelete:(id: number) => void
 }
 
 export default function UserList({users,onDelete}:Props){
     return(
         <ul>
             {Array.isArray(users) && users.map((user)=>(
-                 <UserItem key={user._id} user={user} onDelete={onDelete}/>
+                 <UserItem key={user.id} user={user} onDelete={onDelete}/>
             ))}
         </ul>
     )
